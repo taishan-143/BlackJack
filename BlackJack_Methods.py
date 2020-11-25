@@ -1,10 +1,10 @@
 from BlackJack_Classes import *
+from card_data import values
 
 def take_bet(chips):
-    
     while True:
         try:
-            chips.bet = int(input('How many chips would you like to bet? '))
+            chips.bet = int(input(f'How many chips would you like to bet? (up to {chips.total}):  '))
         except ValueError:
             print('Sorry, a bet must be an integer!')
         else:
@@ -14,28 +14,28 @@ def take_bet(chips):
                 break
 
 def hit(deck,hand):
-    
-    hand.add_card(deck.deal())
+    hand.add_card(deck.deal(), values)
     hand.adjust_for_ace()
 
 def hit_or_stand(deck,hand):
-    global playing  # to control an upcoming while loop
-    
+    # global playing  # Sort out to accomodate for new file structure!
     while True:
-        x = input("Would you like to Hit or Stand? Enter 'h' or 's' ")
-        
-        if x[0].lower() == 'h':
+        choice = input("\nWould you like to Hit or Stand? Enter 'h' or 's': ")
+        if choice == 'h':
             hit(deck,hand)  # hit() function defined above
-
-        elif x[0].lower() == 's':
-            print("Player stands. Dealer is playing.")
+            playing = True
+        elif choice == 's':
+            print("\nPlayer stands. Dealer is playing.")
             playing = False
-
-        else:
+        elif choice == '' or choice == ' ':
             print("Sorry, please try again.")
             continue
+        else:
+            print("Sorry, I don't understand.")
+            continue
         break
-
+            
+            
 def show_some(player,dealer):
     print("\nDealer's Hand:")
     print(" <card hidden>")
